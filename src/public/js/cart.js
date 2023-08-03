@@ -1,5 +1,6 @@
 
 let addToCartById = document.getElementsByClassName("cartInfo")[0];
+let addToTicketById = document.getElementsByClassName("ticketInfo")[0];
 const API_URL = "http://localhost:8080/api";
 
 function putIntoCart(_id) {
@@ -72,82 +73,40 @@ function clearCart() {
     });
 }
 
+/* function purchaseCart () {
+  const ticketIdValue = addToTicketById?.getAttribute("id");
+  const url = API_URL + "/carts/" + ticketIdValue
+  fetch(url, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  }) */
 
-const buyButton = document.querySelector("#buy-button");
-SetCartID();
-
-async function SetCartID(_id) {
-  try {
-    if (!buyButton) return;
-    const result = await fetch(`/carts/${cart}`);
-    const data = await result.json();
-    if (!data.payload) return;
-    const cartID = data.payload;
-    setButton(cartID);
-  } catch (error) {
-    console.log("Couldn't get cart ID");
-  }
-}
-
-function setButton(cartID) {
-  buyButton.onclick = (e) => {
-    const loadingAlert = Swal.fire({
-      title: "Loading...",
-      allowOutsideClick: false,
-      showConfirmButton: false,
-      didOpen: () => {
-        Swal.showLoading();
-      },
-    });
-    fetch(`/api/carts/${cart}/purchase`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+ function purchaseCart(){
+    if (addToTicketById === undefined) {
+        window.location.href = 'http://localhost:8080/?login=true';
+        return;
+    }
+    const cartId = addToTicketById.getAttribute('id');
+    fetch(`http://localhost:8080/carts/${cartId}/purchase`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+        })
     })
-      .then((response) => response.json())
-      .then((result) => {
-        if (result.status === "nostock" || result.status === "empty") {
-          loadingAlert.close();
-          Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: result.message,
-          });
-        } else if (result.status === "success") {
-          loadingAlert.close();
-          Swal.fire({
-            icon: "success",
-            timer: 2500,
-            title: "Redirecting to Products Page...",
-            text: "Purchase successful!",
-            allowOutsideClick: false,
-            timerProgressBar: true,
-            didOpen: () => {
-              Swal.showLoading();
-            },
-            willClose: () => {
-              // Redirect to another URL after the specified time
-              window.location.href = "/products";
-            },
-          });
+    .then(response => {
+        if (response.ok) {
+            alert('Purchase completed');
+            location.reload()
         } else {
-          loadingAlert.close();
-          Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: "Couldn't purchase items. Try again later!",
-          });
+            throw new Error('Failed to create ticket');
         }
-      })
-      .catch((error) => {
-        loadingAlert.close();
-        Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: "Something went wrong!",
-        });
-      });
-  };
-}
+    })
+    .catch(error => {
+        console.error(error);
+    });
 
+}

@@ -75,6 +75,7 @@ class ViewsController{
                     title: item.product.title,
                     price: item.product.price,
                     quantity: item.quantity,
+                    cart: cart._id,
                     };
                 }
                 return null; 

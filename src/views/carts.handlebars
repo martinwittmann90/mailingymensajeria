@@ -11,17 +11,21 @@
     </thead>
     <tbody>
       {{#each cart}}
+      <div class="ticketInfo" id="{{this.cart}}">
         <tr>
           <td>{{this.title}}</td>
           <td>{{this.price}}</td>
           <td>{{this.quantity}}</td>
+          <td>{{this.cart}}</td>
           <td><button onclick="removeProductFromCart('{{../cart._id}}', '{{this.product._id}}')">Eliminar</button></td>
         </tr>
+      </div>
       {{/each}}
     </tbody>
   </table>
   <button class="button is-danger mt-3" id="btnComprar" onclick="clearCart()">Vaciar carrito</button>
-  <button id="buy-button" type="submit" class="button is-danger mt-3">Comprar</button>
+  <button onclick="purchaseCart()" class="button is-danger mt-3">FINALIZAR COMPRA</button>
+  </div>
 {{else}}
   <p>No products in the cart</p>
 {{/if}}
