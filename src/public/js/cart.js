@@ -73,16 +73,6 @@ function clearCart() {
     });
 }
 
-/* function purchaseCart () {
-  const ticketIdValue = addToTicketById?.getAttribute("id");
-  const url = API_URL + "/carts/" + ticketIdValue
-  fetch(url, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  }) */
-
  function purchaseCart(){
     if (addToTicketById === undefined) {
         window.location.href = 'http://localhost:8080/?login=true';

@@ -93,20 +93,20 @@ export const ticketController = new TicketController();
         async createTicket  (req, res) {
             const { code, purchaser } = req.body;
             try {
-            // Obtén los productos del carrito para el ID determinado (reemplaza 'cartId' con el ID real del carrito)
+            // Obtén los products del carrito para el ID determinado (reemplaza 'cartId' con el ID real del carrito)
             const cartId = req.params.cid;
             const cartProducts = await dbCarts.updateProductQuantity(cartId);
-            // Calcula el total de la compra sumando los precios de los productos en el carrito
+            // Calcula el total de la compra sumando los precios de los products en el carrito
             let amount = 0;
             for (const product of cartProducts) {
             amount += product.price;
             }
             // Crea el ticket con los datos proporcionados
             const ticket = await ticketService.createTicket(code, amount, purchaser);
-            // Asigna los productos del carrito al ticket creado (opcional, dependiendo de tu modelo de datos)
+            // Asigna los products del carrito al ticket creado (opcional, dependiendo de tu modelo de datos)
             ticket.products = cartProducts;
             await ticket.save();
-            // Limpia el carrito después de incorporar los productos al ticket (opcional)
+            // Limpia el carrito después de incorporar los products al ticket (opcional)
             //await ServiceCarts.clearCart(cartId);
             res.render('ticket', { ticket });
             } catch (error) {

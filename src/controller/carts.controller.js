@@ -69,7 +69,7 @@ class CartController{
         };
     async purchase(req, res) {
         const cartID = req.params.cid;
-        const response = await cartService.purchase(req.session.user?.email, cartID);
+        const response = await ServiceCarts.purchase(req.session.user?.email, cartID);
         return res.status(response.code).json(response.result);
     }
 }

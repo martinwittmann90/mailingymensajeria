@@ -103,11 +103,11 @@ class ServiceCarts {
   async purchase(purchaser, cartID) {
     try {
         const cart = await cartsDao.findCart(cartID);
-        if (cart.productos.length < 1)
+        if (cart.products.length < 1)
             return { code: 404, result: { status: "empty", message: "Cart is empty" } };
         let totalAmount = 0;
-        for (const cartProduct of cart.productos) {
-            const productInDB = await productsDao.findProduct(cartProduct.idProduct.toString());
+        for (const cartProduct of cart.products) {
+            const productInDB = await productsDao.findProduct(cartProduct.product.toString());
             if (productInDB.stock < cartProduct.quantity) {
                 return {
                     code: 404,
@@ -121,7 +121,7 @@ class ServiceCarts {
             totalAmount += productInDB.price * cartProduct.quantity;
             productInDB.stock -= cartProduct.quantity;
             await productsDao.updateProduct(productInDB._id, productInDB);
-            await this.deleteProductFromCart(cartID, cartProduct.idProduct.toString());
+            await this.deleteProductFromCart(cartID, cartProduct.product.toString());
         }
         const ticket = await ticketsDao.createTicket(purchaser, totalAmount);
         return { code: 200, result: { status: "success", message: "Purchase successful", payload: ticket } };
@@ -130,7 +130,7 @@ class ServiceCarts {
         console.log(error);
         return { code: 500, result: { status: "error", message: "Couldn't purchase products." } };
     }
-}
-}
+  }
+};
 
 export default ServiceCarts;
