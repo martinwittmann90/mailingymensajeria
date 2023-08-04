@@ -7,7 +7,6 @@ class ServiceCarts {
     const cartCreated = await CartModel.create({});
     return { status: 200, result: { status: "success", payload: cartCreated }};
   }
-
   async get(cartId) {
     const cart = await CartModel.findById(cartId).populate("products.product").lean()
     if (!cart) {
@@ -15,7 +14,6 @@ class ServiceCarts {
     }
     return cart;
   }
-
   async addProductToCart(cartId, productId) {
     try {
       const cart = await CartModel.findById(cartId);
@@ -40,7 +38,6 @@ class ServiceCarts {
       throw error;
     }
   }
-
   async updateCart(cartId, products) {
     try {
       const cart = await CartModel.findByIdAndUpdate(
@@ -53,7 +50,6 @@ class ServiceCarts {
       throw new Error("Error updating cart in database");
     }
   }
-
   async updateProductQuantity(cartId, productId, quantity) {
     try {
       const cart = await CartModel.findById(cartId);
@@ -70,7 +66,6 @@ class ServiceCarts {
       throw new Error("Error updating product quantity in cart");
     }
   }
-
   async removeProductFromCart(cartId, productId) {
     try {
       const cart = await CartModel.findById(cartId);
@@ -87,7 +82,6 @@ class ServiceCarts {
       throw new Error("Error removing product from cart");
     }
   }  
-
   async clearCart(cartId) {
     try {
       const cart = await CartModel.findById(cartId);
@@ -100,9 +94,9 @@ class ServiceCarts {
       throw new Error("Error clearing cart");
     }
   }
-  async purchase(purchaser, cartID) {
+  async purchase(purchaser, cartId) {
     try {
-        const cart = await cartsDao.findCart(cartID);
+        const cart = await cartsDao.findCart(cartId);
         if (cart.products.length < 1)
             return { code: 404, result: { status: "empty", message: "Cart is empty" } };
         let totalAmount = 0;
@@ -121,7 +115,7 @@ class ServiceCarts {
             totalAmount += productInDB.price * cartProduct.quantity;
             productInDB.stock -= cartProduct.quantity;
             await productsDao.updateProduct(productInDB._id, productInDB);
-            await this.deleteProductFromCart(cartID, cartProduct.product.toString());
+            await this.deleteProductFromCart(cartId, cartProduct.product.toString());
         }
         const ticket = await ticketsDao.createTicket(purchaser, totalAmount);
         return { code: 200, result: { status: "success", message: "Purchase successful", payload: ticket } };

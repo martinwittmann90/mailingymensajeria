@@ -3,8 +3,8 @@ class CartsDao {
     async createCart() {
         return await CartModel.create({ products: [] });
     }
-    async updateCart(cartID, cart) {
-        await CartModel.updateOne({ _id: cartID }, cart);
+    async updateCart(cartId, cart) {
+        await CartModel.updateOne({ _id: cartId }, cart);
     }
     async findCart(id) {
         return (await CartModel.findById(id));

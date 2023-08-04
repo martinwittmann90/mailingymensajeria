@@ -68,8 +68,8 @@ class CartController{
         }
         };
     async purchase(req, res) {
-        const cartID = req.params.cid;
-        const response = await ServiceCarts.purchase(req.session.user?.email, cartID);
+        const cartId = req.params.cid;
+        const response = await dbCarts.purchase(req.session.user?.email, cartId);
         return res.status(response.code).json(response.result);
     }
 }

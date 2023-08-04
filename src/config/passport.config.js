@@ -26,7 +26,7 @@ export default function initPassport() {
                 return done(null, false);
             }
             const newCart = await dbCarts.createOne();
-            const cartID = newCart.result.payload._id.toString();
+            const cartId = newCart.result.payload._id.toString();
             
             const newUser = {
                 email,
@@ -35,7 +35,7 @@ export default function initPassport() {
                 age: Number(age),
                 role: "user",
                 password: createHash(password),
-                cartId: cartID,
+                cartId: cartId,
             };
             let userCreated = (await UserModel.create(newUser));
             console.log(userCreated);
@@ -91,7 +91,7 @@ export default function initPassport() {
             let user = await UserModel.findOne({ email: profile.email });
             if (!user) {
                 const newCart = await dbCarts.createOne();
-                const cartID = newCart.result.payload._id.toString();
+                const cartId = newCart.result.payload._id.toString();
                 const newUser = {
                     email: profile.email,
                     firstName: profile._json.name || profile._json.login || "noname",
@@ -99,7 +99,7 @@ export default function initPassport() {
                     age: null,
                     role: "user",
                     password: "nopass",
-                    cartId: cartID,
+                    cartId: cartId,
                 };
                 let userCreated = await UserModel.create(newUser);
                 console.log("User Registration succesful");
