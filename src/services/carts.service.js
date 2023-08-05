@@ -1,8 +1,8 @@
 import CartsDAO from '../DAO/classes/cart.dao.js';
-import ProductsDAO from '../DAO/classes/cart.dao.js'; 
+import ProductsDAO from '../DAO/classes/product.dao.js'; 
 
 const cartsDAO = new CartsDAO();
-const productDAO = new ProductsDAO();
+const productsDAO = new ProductsDAO();
 class ServiceCarts {
   async createOne() {
     const cartCreated = await cartsDAO.createCart({});
@@ -20,7 +20,7 @@ class ServiceCarts {
   async addProductToCart(cartId, productId) {
     try {
       const cart = await cartsDAO.getCart(cartId);
-      const product = await ProductModel.findById(productId);
+      const product = await productsDAO.getProduct(productId);
       if (!cart) {
         throw new Error("Cart not found");
       }

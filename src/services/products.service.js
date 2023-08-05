@@ -1,26 +1,17 @@
-import ProductModel from "../DAO/models/product.model.js";
-
+import ProductsDAO from "../DAO/classes/product.dao.js";
+const productsDAO = new ProductsDAO();
 class ServiceProducts {
-    async getAllProducts(page, limit, sort, query) {
+    async getAllProducts() {
         try {
-            const filter = query
-            ? { title: { $regex: query.title, $options: "i" } }
-            : {};
-            const products = await ProductModel.paginate(filter, {
-                limit: limit || 5,
-                page: page || 1,
-                sort: sort === "desc" ? "-price" : "price",
-                lean: true,
-              });
+            const products = await productsDAO.getAllProd();
             return products;
         } catch (error) {
-            throw error;
+            throw new Error(error);
         }
     }
-
     async getProductById(productId) {
         try {
-            const one = await ProductModel.findById(productId);
+            const one = await productsDAO.getProduct(productId);
             return one;
         } catch (error) {
             throw new Error(error);
@@ -29,7 +20,7 @@ class ServiceProducts {
 
     async createProduct(productData) {
         try {
-            const newProd = await ProductModel.create(productData);
+            const newProd = await productsDAO.createOneProduct(productData);
             return newProd;
         } catch (error) {
             throw new Error(error);
@@ -38,7 +29,7 @@ class ServiceProducts {
 
     async updateProduct(productId, productData) {
         try {
-            const productUpdate = await ProductModel.findByIdAndUpdate(
+            const productUpdate = await productsDAO.updateOneProduct(
                 productId,
                 productData,
                 { new: true }
@@ -51,7 +42,7 @@ class ServiceProducts {
 
     async deleteProduct(productId) {
         try {
-            const delProd = await ProductModel.findByIdAndDelete(productId);
+            const delProd = await productsDAO.deleteOneProduct(productId);
             return delProd;
         } catch (error) {
             throw new Error(error);
