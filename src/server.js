@@ -17,9 +17,9 @@ import cookieParser from "cookie-parser";
 import passport from "passport";
 import initPassport from "./config/passport.config.js";
 import "./config/passport.config.js";
-import { __dirname } from "./config.js"; //HAY QUE CAMBIAR EL NOMBRE DEL ARCHIVO ESTO
+import { __dirname } from "./config.js"; //HAY QUE CAMBIAR ESTO
 import config from "./config/config.js";
-import { initFactory, factoryStore } from "./DAO/factory.js";
+import userDTO from './DAO/DTO/user.dto.js';
 
 /*-------CONFIG BASICAS Y CONEXION A BD-------*/
 const app = express();
@@ -46,100 +46,48 @@ const server = httpServer.listen(port, () =>
     `Server started on port ${port}. at ${new Date().toLocaleString()}`
   )
 );
-server.on("error", (err) => console.log(err));
+server.on("error", (error) => console.log(error));
 
 /*-------SESSION-------------*/
 app.use(cookieParser("mySecret"));
-initFactory();
-app.use(session({
-  ...factoryStore,
-  secret: process.env.SESSION_SECRET,
-  resave: true,
-  saveUninitialized: true,
-}));
+
+const MONGO_USER = process.env.MONGO_USER;
+const MONGO_PASS = process.env.MONGO_PASS;
+const DB_NAME = process.env.DB_NAME;
+const SESSION_SECRET = process.env.SESSION_SECRET;
+
+app.use(
+  session({
+    store: MongoStore.create({  
+       mongoUrl: `mongodb+srv://${MONGO_USER}:${MONGO_PASS}@projectmartinwittmann.l8a7l5b.mongodb.net/${DB_NAME}?retryWrites=true&w=majority`, 
+       mongoOptions: { useNewUrlParser: true, useUnifiedTopology: true },
+       ttl: 60 * 10 
+      }),
+    secret: SESSION_SECRET,
+    resave: true,
+    saveUninitialized:true
+})
+);
 /*-------PASSPORT-------------*/
 initPassport();
 app.use(passport.initialize());
 app.use(passport.session());
 
-
 /*-------PLANTILLAS-------*/
 app.use('/', viewsRouter); 
+app.use('/realtimeproducts', viewsRouter); 
 app.use('/products', viewsRouter);
 app.use("/chat", chatRouter);
 app.use("/auth/profile", sessionsRouter);
-
-
-//--------------------NODEMAILER------------------------
-import nodemailer from "nodemailer";
-
-const transport = nodemailer.createTransport({
-  service: "gmail",
-  port: 587,
-  auth: {
-    user: process.env.GOOGLE_EMAIL,
-    pass: process.env.GOOGLE_PASS,
-  },
-});
-
-app.get("/mail", async (req, res) => {
-  const result = await transport.sendMail({
-    from: process.env.GOOGLE_EMAIL,
-    to: "martinwittmann90@gmail.com",
-    subject: "Mensaje para el usuario",
-    html: `
-              <div>
-                  <h1>Hola usuario</h1>
-              </div>
-          `,
-    /* attachments: [
-      {
-        filename: "image1.gif",
-        path: __dirname + "/images/image1.gif",
-        cid: "image1",
-      },
-    ], */
-  });
-
-  console.log(result);
-  res.send("Email sent");
-});
-
-//--------------------TWILIO----------------------------
-import twilio from "twilio";
-const client = twilio(
-  process.env.TWILIO_ACCOUNT_SID,
-  process.env.TWILIO_AUTH_TOKEN
-);
-
-app.get("/sms", async (req, res) => {
-  const result = await client.messages.create({
-    body: "Hola usuario!",
-    from: process.env.TWILIO_PHONE_NUMBER,
-    to: "+5491136228024",
-  });
-
-  console.log(result);
-
-  res.send("SMS sent");
-});
-
-/* app.get("/whatsaap", async (req, res) => {
-  const result = await client.messages.create({
-    body: "Hola usuario!",
-    from: 'whatsapp:+14155238886',
-    to: 'whatsapp:+5491136228024',
-  });
-
-  console.log(result);
-
-  res.send("Whatsaap sent");
-}); */
-
 /*-------END POINTS-------*/
 app.use('/api/products', productsRouter);
 app.use('/api/carts', cartsRouter);
 app.use("/api/sessions", sessionsRouter);
+app.use('/api/sessions/current', (req, res) => {
+  const infoUser = new userDTO(req.session);
+  res.json({ user: infoUser });
+});
+
 app.get('/*', async (req, res) => {
   res.render("notfound");
 })

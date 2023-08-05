@@ -32,7 +32,7 @@ const userSchema = new Schema({
         default: "user", 
         enum: ["user", "admin"] 
     },
-    cart: { 
+    cartID: { 
         type: String, 
         required: false,
         ref: "carts",

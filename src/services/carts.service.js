@@ -1,22 +1,25 @@
-import  CartModel from '../DAO/models/carts.model.js';
-import ProductModel from '../DAO/models/products.model.js';
-import { cartsDao, productsDao, ticketsDao } from "../DAO/factory.js";
+import CartsDAO from '../DAO/classes/cart.dao.js';
+import ProductsDAO from '../DAO/classes/cart.dao.js'; 
 
+const cartsDAO = new CartsDAO();
+const productDAO = new ProductsDAO();
 class ServiceCarts {
   async createOne() {
-    const cartCreated = await CartModel.create({});
+    const cartCreated = await cartsDAO.createCart({});
     return { status: 200, result: { status: "success", payload: cartCreated }};
   }
+
   async get(cartId) {
-    const cart = await CartModel.findById(cartId).populate("products.product").lean()
+    const cart = await cartsDAO.getCart(cartId);
     if (!cart) {
       throw new Error("Cart not found");
     }
     return cart;
   }
+
   async addProductToCart(cartId, productId) {
     try {
-      const cart = await CartModel.findById(cartId);
+      const cart = await cartsDAO.getCart(cartId);
       const product = await ProductModel.findById(productId);
       if (!cart) {
         throw new Error("Cart not found");
@@ -38,9 +41,10 @@ class ServiceCarts {
       throw error;
     }
   }
+
   async updateCart(cartId, products) {
     try {
-      const cart = await CartModel.findByIdAndUpdate(
+      const cart = await cartsDAO.updateCart(
         cartId,
         { products },
         { new: true }
@@ -50,9 +54,10 @@ class ServiceCarts {
       throw new Error("Error updating cart in database");
     }
   }
+
   async updateProductQuantity(cartId, productId, quantity) {
     try {
-      const cart = await CartModel.findById(cartId);
+      const cart = await cartsDAO.getCart(cartId);
       const productIndex = cart.products.findIndex(
         (p) => p.product.toString() === productId
       );
@@ -66,9 +71,10 @@ class ServiceCarts {
       throw new Error("Error updating product quantity in cart");
     }
   }
+
   async removeProductFromCart(cartId, productId) {
     try {
-      const cart = await CartModel.findById(cartId);
+      const cart = await cartsDAO.getCart(cartId);
       const productIndex = cart.products.findIndex(
         (p) => p.product.toString() === productId
       );
@@ -82,9 +88,10 @@ class ServiceCarts {
       throw new Error("Error removing product from cart");
     }
   }  
+
   async clearCart(cartId) {
     try {
-      const cart = await CartModel.findById(cartId);
+      const cart = await cartsDAO.getCart(cartId);
       if (!cart) {
         throw new Error("Cart not found");
       }
@@ -94,37 +101,7 @@ class ServiceCarts {
       throw new Error("Error clearing cart");
     }
   }
-  async purchase(purchaser, cartId) {
-    try {
-        const cart = await cartsDao.findCart(cartId);
-        if (cart.products.length < 1)
-            return { code: 404, result: { status: "empty", message: "Cart is empty" } };
-        let totalAmount = 0;
-        for (const cartProduct of cart.products) {
-            const productInDB = await productsDao.findProduct(cartProduct.product.toString());
-            if (productInDB.stock < cartProduct.quantity) {
-                return {
-                    code: 404,
-                    result: {
-                        status: "nostock",
-                        message: `Not enough stock for product ${productInDB.title}`,
-                        payload: productInDB,
-                    },
-                };
-            }
-            totalAmount += productInDB.price * cartProduct.quantity;
-            productInDB.stock -= cartProduct.quantity;
-            await productsDao.updateProduct(productInDB._id, productInDB);
-            await this.deleteProductFromCart(cartId, cartProduct.product.toString());
-        }
-        const ticket = await ticketsDao.createTicket(purchaser, totalAmount);
-        return { code: 200, result: { status: "success", message: "Purchase successful", payload: ticket } };
-    }
-    catch (error) {
-        console.log(error);
-        return { code: 500, result: { status: "error", message: "Couldn't purchase products." } };
-    }
-  }
-};
+  
+}
 
 export default ServiceCarts;

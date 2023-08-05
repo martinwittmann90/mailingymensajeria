@@ -1,10 +1,12 @@
 
 let addToCartById = document.getElementsByClassName("cartInfo")[0];
-let addToTicketById = document.getElementsByClassName("ticketInfo")[0];
 const API_URL = "http://localhost:8080/api";
 
 function putIntoCart(_id) {
   const cartIdValue = addToCartById?.getAttribute("id");
+  if (cartIdValue === undefined) {
+    window.location.href = "/api/sessions/current";
+  }
   const url = API_URL + "/carts/" + cartIdValue + "/product/" + _id;
   const data = {};
   const options = {
@@ -71,32 +73,4 @@ function clearCart() {
       console.error("Error:", error);
       alert(JSON.stringify(error));
     });
-}
-
- function purchaseCart(){
-    if (addToTicketById === undefined) {
-        window.location.href = 'http://localhost:8080/?login=true';
-        return;
-    }
-    const cartId = addToTicketById.getAttribute('id');
-    fetch(`http://localhost:8080/carts/${cartId}/purchase`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-        })
-    })
-    .then(response => {
-        if (response.ok) {
-            alert('Purchase completed');
-            location.reload()
-        } else {
-            throw new Error('Failed to create ticket');
-        }
-    })
-    .catch(error => {
-        console.error(error);
-    });
-
 }

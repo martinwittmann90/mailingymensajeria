@@ -1,6 +1,6 @@
 import passport from "passport";
 import local from "passport-local";
-import UserModel from "../DAO/models/users.model.js";
+import UserModel from "../DAO/models/user.model.js";
 import { compareHash, createHash } from "../config/bcrypt.js";
 import dotenv from "dotenv";
 dotenv.config();
@@ -14,19 +14,20 @@ import ServiceCarts from '../services/carts.service.js'
 const dbCarts = new ServiceCarts();
 
 export default function initPassport() {
+
     passport.use("register", new localStrategy({
         passReqToCallback: true,
         usernameField: "email",
     }, async (req, username, password, done) => {
         try {
-            const { email, firstName, lastName, age } = req.body;
+            const { email, firstName, lastName, age, role } = req.body;
             let user = await UserModel.findOne({ email: username });
             if (user) {
                 console.log("User already exists");
                 return done(null, false);
             }
             const newCart = await dbCarts.createOne();
-            const cartId = newCart.result.payload._id.toString();
+            const cartID = newCart.result.payload._id.toString();
             
             const newUser = {
                 email,
@@ -35,7 +36,7 @@ export default function initPassport() {
                 age: Number(age),
                 role: "user",
                 password: createHash(password),
-                cartId: cartId,
+                cartID: cartID,
             };
             let userCreated = (await UserModel.create(newUser));
             console.log(userCreated);
@@ -62,8 +63,8 @@ export default function initPassport() {
             }
             return done(null, user);
         }
-        catch (err) {
-            return done(err);
+        catch (error) {
+            return done(error);
         }
     }));
 
@@ -91,15 +92,15 @@ export default function initPassport() {
             let user = await UserModel.findOne({ email: profile.email });
             if (!user) {
                 const newCart = await dbCarts.createOne();
-                const cartId = newCart.result.payload._id.toString();
+                const cartID = newCart.result.payload._id.toString();
                 const newUser = {
                     email: profile.email,
                     firstName: profile._json.name || profile._json.login || "noname",
-                    lastName: null,
-                    age: null,
+                    lastName: "nolast",
+                    age: 18,
                     role: "user",
                     password: "nopass",
-                    cartId: cartId,
+                    cartID: cartID,
                 };
                 let userCreated = await UserModel.create(newUser);
                 console.log("User Registration succesful");

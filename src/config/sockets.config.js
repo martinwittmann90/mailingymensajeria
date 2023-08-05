@@ -1,11 +1,10 @@
 
 import ServiceProducts from '../services/products.service.js';
 import ServiceChats from '../services/chats.service.js';
-import ServiceCarts from '../services/carts.service.js';
 
 const dbChat = new ServiceChats();
 const productManager = new ServiceProducts();
-const dbCarts = new ServiceCarts();
+
 
 export default (io) => {
   io.on("connection", (socket) => {

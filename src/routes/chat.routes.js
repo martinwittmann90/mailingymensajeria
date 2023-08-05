@@ -1,8 +1,15 @@
 import express from 'express';
-import { chatController } from "../controller/chat.controller.js";
-import { isUser } from "../middleware/auth.js";
 const chatRouter = express.Router();
 
-chatRouter.get("/", isUser, chatController.createChat);
+chatRouter.get("/", async (req, res) => {
+  try {
+    res.render("chat", {});
+  } catch (error) {
+    res.status(error.status || 500).json({
+      status: "error",
+      payload: error.message,
+    });
+  }
+});
 
 export default chatRouter;

@@ -1,12 +1,23 @@
-import { MessageModel } from "../models/messages.model.js";
-class MessagesDao {
-    async getAll() {
-        return await MessageModel.find({});
+import MessageModel from "../models/message.model.js"
+class MessagesDAO {
+  async getAll() {
+    try {
+      const menssages = await MessageModel.find({});
+      return menssages;
+    } catch (error) {
+      console.log(error);
     }
-    async addMessage(message) {
-        const newMessage = new MessageModel(message);
-        await newMessage.save();
+  }
+
+  async add(message) {
+    try {
+      const newMessage = await MessageModel.create(message);
+      return newMessage;
+    } catch (error) {
+      console.log(error);
     }
+  }
 }
-const messagesDao = new MessagesDao();
-export default messagesDao;
+
+export default MessagesDAO;
+

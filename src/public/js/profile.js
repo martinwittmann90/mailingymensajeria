@@ -6,7 +6,7 @@ logoutBtn.onclick = async () => {
     loadingElement.textContent = "Loading...";
     document.body.appendChild(loadingElement);
 
-    localStorage.removeItem("cartId");
+    localStorage.removeItem("cartID");
     await fetch("/api/sessions/logout");
 
     document.body.removeChild(loadingElement);

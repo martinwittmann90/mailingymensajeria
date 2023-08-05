@@ -1,22 +1,3 @@
-class SessionController{
-    async registerGithub (req, res)  {
-        req.session.user = req.user;
-        res.redirect('/products');
-    }
-    async getCurrent (req, res) {
-        return res.render("profile", req.session.user = {
-            _id: req.user._id,
-            email: req.user.email,
-            firstName: req.user.firstName,
-            lastName: req.user.lastName,
-            role: req.user.role,
-            age: req.user.age,
-            cart: req.user.cart,
-        });
-    }
-}
-export const sessionController = new SessionController();
-
 class AuthController{
     async renderLogin  (req, res) {
         return res.render("login",{})
@@ -57,8 +38,8 @@ class AuthController{
         return res.status(400).json({ status: "error", message: "Wrong user or password" });
     }
     async logout (req, res) {
-        req.session.destroy((err) => {
-            if (err) {
+        req.session.destroy((error) => {
+            if (error) {
                 return res.status(500).json({ status: "error", message: "Error! Couldn't logout!" });
             }
             res.clearCookie("connect.sid");
@@ -68,6 +49,21 @@ class AuthController{
     async renderRegister  (req, res) {
         return res.render("register",{})
         }
+    async registerGithub (req, res)  {
+        req.session.user = req.user;
+        res.redirect('/products');
+    }
+    async getCurrent (req, res) {
+        return res.render("profile", req.session.user = {
+            _id: req.user._id,
+            email: req.user.email,
+            firstName: req.user.firstName,
+            lastName: req.user.lastName,
+            role: req.user.role,
+            age: req.user.age,
+            cart: req.user.cart,
+        });
+    }
 };
 
 export const authController = new AuthController();

@@ -1,4 +1,4 @@
-import ProductModel from "../DAO/models/products.model.js";
+import ProductModel from "../DAO/models/product.model.js";
 
 class ServiceProducts {
     async getAllProducts(page, limit, sort, query) {
@@ -13,8 +13,8 @@ class ServiceProducts {
                 lean: true,
               });
             return products;
-        } catch (err) {
-            throw err;
+        } catch (error) {
+            throw error;
         }
     }
 
@@ -22,8 +22,8 @@ class ServiceProducts {
         try {
             const one = await ProductModel.findById(productId);
             return one;
-        } catch (err) {
-            throw new Error(err);
+        } catch (error) {
+            throw new Error(error);
         }
     }
 
@@ -31,8 +31,8 @@ class ServiceProducts {
         try {
             const newProd = await ProductModel.create(productData);
             return newProd;
-        } catch (err) {
-            throw new Error(err);
+        } catch (error) {
+            throw new Error(error);
         }
     }
 
@@ -44,8 +44,8 @@ class ServiceProducts {
                 { new: true }
             );
             return productUpdate;
-        } catch (err) {
-            throw err;
+        } catch (error) {
+            throw error;
         }
     }
 
@@ -53,8 +53,8 @@ class ServiceProducts {
         try {
             const delProd = await ProductModel.findByIdAndDelete(productId);
             return delProd;
-        } catch (err) {
-            throw new Error(err);
+        } catch (error) {
+            throw new Error(error);
         }
     }
 };

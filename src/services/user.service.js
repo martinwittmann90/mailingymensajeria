@@ -1,4 +1,4 @@
-import UserModel from '../DAO/models/users.model.js'
+import UserModel from '../DAO/models/user.model.js'
 import { createHash, compareHash } from "../config/bcrypt.js";
 
 class ServiceUsers {
@@ -11,7 +11,7 @@ class ServiceUsers {
                 email, 
                 password: createHash(password), 
                 role,
-                cart: "",
+                cartID: "",
              });
             return { code: 201, result: { status: "success", message: "User created successfully", payload: user } };
         }

@@ -9,6 +9,9 @@ dotenv.config({
   path: program.opts().mode === 'DEVELOPMENT' ? './.env.development' : './.env.production',
 });
 
+
+process.env.NODE_ENV = program.opts().mode;
+
 export default {
   port: process.env.PORT,
   clientId:process.env.GITHUB_CLIENT_ID,
@@ -16,4 +19,7 @@ export default {
   mongoUrl: process.env.MONGO_URL,
   adminName: process.env.ADMIN_NAME,
   adminPassword: process.env.ADMIN_PASSWORD,
+  MONGO_URL: process.env.MONGO_URL,
+  PERSISTENCE: process.env.PERSISTENCE,
+  SESSION_SECRET: process.env.SESSION_SECRET,
 };

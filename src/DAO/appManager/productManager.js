@@ -78,8 +78,8 @@ class ProductManager {
       allproductstring.length > 0
         ? (allProductsArray = JSON.parse(allproductstring))
         : (allProductsArray = []);
-    } catch (err) {
-      console.log("Error en la lectura del archivo", err);
+    } catch (error) {
+      console.log("Error en la lectura del archivo", error);
     }
     return allProductsArray;
   }
@@ -88,8 +88,8 @@ class ProductManager {
     let allproductstring = JSON.stringify(allProductsArray, null, 2);
     try {
       await fs.promises.writeFile(this.path, allproductstring);
-    } catch (err) {
-      console.log("Error en la escritura", err);
+    } catch (error) {
+      console.log("Error en la escritura", error);
     }
   }
 

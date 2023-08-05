@@ -4,11 +4,10 @@
     <a href="/api/sessions/current" class="navbar__link cartInfo" id="{{session.cart}}">
       <button class="navbar__button button is-danger">Perfil 🙂</button>
     </a>
-    <a href="http://localhost:8080/carts/{{session.cart}}">
+    <a href="http://localhost:8080/carts/{{session.cartID}}">
       <button class="navbar__button button is-danger">Carrito 🛒</button>
     </a>
-    <button class="navbar__button button is-danger" onclick="location.href='/chat'">Chat 💬</button>
-    <div class="navbar__content">
+        <div class="navbar__content">
       <h2 class="navbar__title">Bienvenido/a: {{session.firstName}}</h2>
       <button id="logout-btn" class="navbar__logout-btn button is-danger">Logout</button>
     </div>

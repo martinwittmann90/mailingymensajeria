@@ -1,28 +1,28 @@
-import MessageModel from "../DAO/models/messages.model.js"
+import MessageModel from "../DAO/models/message.model.js"
 
 class ServiceChats {
   async getChat() {
     try {
       const allChat = await MessageModel.find({});
       return allChat;
-    } catch (err) {
-      throw new Error(err);
+    } catch (error) {
+      throw new Error(error);
     }
   }
   async getOneChat(id) {
     try {
       const oneChat = await MessageModel.findById(id);
       return oneChat;
-    } catch (err) {
-      throw new Error(err);
+    } catch (error) {
+      throw new Error(error);
     }
   }
   async createChat(doc) {
     try {
       const newChat = await MessageModel.create(doc);
       return newChat;
-    } catch (err) {
-      throw new Error(err);
+    } catch (error) {
+      throw new Error(error);
     }
   }
 
@@ -31,8 +31,8 @@ class ServiceChats {
       await MessageModel.findByIdAndUpdate(id, doc);
       const chatUpdated = await MessageModel.findById(id);
       return chatUpdated;
-    } catch (err) {
-      throw new Error(err);
+    } catch (error) {
+      throw new Error(error);
     }
   }
 
@@ -40,8 +40,8 @@ class ServiceChats {
     try {
       const deletedChat = await MessageModel.findByIdAndDelete(id);
       return deletedChat;
-    } catch (err) {
-      throw new Error(err);
+    } catch (error) {
+      throw new Error(error);
     }
   }
 }

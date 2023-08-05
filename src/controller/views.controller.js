@@ -65,7 +65,7 @@ class ViewsController{
             });
         }
     }
-    async getCardbyId(req, res)  {
+    async getCardbyId(req, res,next)  {
         try {
             const { cid } = req.params;
             const cart = await dbCarts.get(cid);
@@ -75,14 +75,13 @@ class ViewsController{
                     title: item.product.title,
                     price: item.product.price,
                     quantity: item.quantity,
-                    cart: cart._id,
                     };
                 }
                 return null; 
                 });
                 res.render("carts", { cart: simplifiedCart });
             } catch (error) {
-                console.log(error)
+                next(error);
             }
     };
     async getLoginHome (req, res)  {
