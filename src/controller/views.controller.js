@@ -5,9 +5,7 @@ import ServiceCarts from "../services/carts.service.js";
 
 const Users = new ServiceUsers()
 /* const Products = new ServiceProducts() */
-const Carts = new ServiceCarts()
 const Chats = new ServiceChats()
-
 const newProductManager = new ServiceProducts;
 const dbCarts = new ServiceCarts();
 
@@ -68,7 +66,7 @@ class ViewsController{
     async getCardbyId(req, res,next)  {
         try {
             const { cid } = req.params;
-            const cart = await dbCarts.get(cid);
+            const cart = await dbCarts.getCartService(cid);
             const simplifiedCart = cart.products.map((item) => {
                 if (item.product) {
                     return {

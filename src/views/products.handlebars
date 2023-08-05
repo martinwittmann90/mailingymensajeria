@@ -1,7 +1,7 @@
 <nav class="navbar">
   {{#if session}}
     <img src="https://i.ibb.co/nrNMjtT/logo.png" class="navbar__logo"/>
-    <a href="/api/sessions/current" class="navbar__link cartInfo" id="{{session.cart}}">
+    <a href="/api/sessions/current" class="navbar__link cartInfo" id="{{session.cartID}}">
       <button class="navbar__button button is-danger">Perfil 🙂</button>
     </a>
     <a href="http://localhost:8080/carts/{{session.cartID}}">

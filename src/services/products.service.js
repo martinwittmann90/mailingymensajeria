@@ -17,7 +17,6 @@ class ServiceProducts {
             throw new Error(error);
         }
     }
-
     async createProduct(productData) {
         try {
             const newProd = await productsDAO.createOneProduct(productData);
