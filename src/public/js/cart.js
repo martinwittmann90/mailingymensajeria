@@ -4,6 +4,8 @@ const API_URL = "http://localhost:8080/api";
 
 function putIntoCart(_id) {
   const cartIdValue = addToCartById?.getAttribute("id");
+  console.log("cartIdValue:", cartIdValue); 
+  console.log("_id:", _id);
   if (cartIdValue === undefined) {
     window.location.href = "/api/sessions/current";
   }
@@ -25,7 +27,7 @@ function putIntoCart(_id) {
     .catch((error) => {
       console.error("Error:", error);
       alert(JSON.stringify(error));
-    });    
+    });   
 }
 
 function removeProductFromCart(_id) {
@@ -74,3 +76,48 @@ function clearCart() {
       alert(JSON.stringify(error));
     });
 }
+
+const purchaseCart = (cartId) => {
+  //get cartId from fetch
+  fetch(`/api/carts/${cartId}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      // console.log(data.payload.products);
+      const products = data.payload.products;
+      const formatProduct = products.map((product) => {
+        return {
+          id: product.id._id,
+          quantity: product.quantity,
+        };
+      });
+      // console.log('desde front', formatProduct);
+
+      fetch(`/api/carts/${cartId}/purchase`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formatProduct),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+          const id = data.payload._id;
+          setTimeout(() => {
+            window.location.href = `/api/carts/purchase/${id}`;
+          }, 3000);
+          showMsg2(
+            `Estamos procesando tu compra. El carrito se vaciará solo con los productos con stock disponible.`,
+            3000,
+            '##0D6EFD'
+          );
+        })
+        .catch((err) => console.log(err));
+    })
+    .catch((err) => console.log(err));
+};

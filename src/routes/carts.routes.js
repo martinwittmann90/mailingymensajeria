@@ -1,12 +1,17 @@
 import express from 'express';
-import { cartController } from "../controller/carts.controller.js";
+import CartController from "../controller/carts.controller.js";
+const cartController = new CartController();
 const cartsRouter = express.Router()
+import { isUser, isLogged, isNotAdmin } from "../middleware/auth.js"
 
 cartsRouter.post("/", cartController.createCart);
 cartsRouter.get("/:cid", cartController.getById);
-cartsRouter.post("/:cid/product/:pid", cartController.addProductToCart);
+cartsRouter.post("/:cid/product/:pid", isUser, cartController.addProductToCart);
 cartsRouter.put("/:cid", cartController.updateCart);
 cartsRouter.delete("/:cid/products/:pid", cartController.deletOneProductbyCart);
 cartsRouter.delete("/:cid", cartController.clearCart);
+cartsRouter.post('/:cid/purchase', cartController.purchaseCart);
+cartsRouter.put('/carts/:cid/purchase', isLogged, isNotAdmin, cartController.purchaseCart);
+cartsRouter.get('/carts/purchase/:cid', isLogged, isNotAdmin, cartController.getTicketById);
 
 export default cartsRouter;

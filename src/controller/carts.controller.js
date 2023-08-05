@@ -91,5 +91,6 @@ class CartController{
       const response = await serviceTickets.getTicketById(id);
       return res.render('ticket', { ticket: response.result });
     };
-};    
-export const cartController = new CartController();
+};
+
+export default CartController;

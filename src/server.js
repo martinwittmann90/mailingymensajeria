@@ -78,6 +78,7 @@ app.use('/', viewsRouter);
 app.use('/realtimeproducts', viewsRouter); 
 app.use('/products', viewsRouter);
 app.use("/chat", chatRouter);
+app.use('/carts', cartsRouter);
 app.use("/auth/profile", sessionsRouter);
 /*-------END POINTS-------*/
 app.use('/api/products', productsRouter);
