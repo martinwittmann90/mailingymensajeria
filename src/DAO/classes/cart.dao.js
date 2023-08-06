@@ -9,7 +9,7 @@ async getCart(cartId){
     const cart = await CartModel.findById(cartId).populate("products.product").lean();
     return cart;
 }
-async updateCart(cartId, products){
+async updateCart(){
     const cart = await CartModel.findByIdAndUpdate(cartId,
       { products },
       { new: true }

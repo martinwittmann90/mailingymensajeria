@@ -44,9 +44,9 @@ class ServiceCarts {
     }
   }
 
-  async updateCartService(cartId) {
+  async updateCartService() {
     try {
-      const cart = await cartsDAO.updateCart(cartId, {products}, {new: true});
+      const cart = await cartsDAO.updateCart();
       return cart;
   } catch (error) {
       throw new Error('Error updating cart in database');

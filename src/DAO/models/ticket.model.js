@@ -5,7 +5,7 @@ const TicketSchema = new Schema(
     code: { type: String, required: true, unique: true },
     purchase_datetime: { type: Date, default: Date.now(), required: true },
     amount: { type: Number, required: true },
-    purchaser: { type: String, required: true, default: 'Anonymous:API' },
+    purchaser: { type: String, required: true, default: 'default' },
     products: [
       {
         id: { type: Schema.Types.ObjectId, ref: 'products' },

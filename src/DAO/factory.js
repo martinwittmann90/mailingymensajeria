@@ -8,17 +8,6 @@ import CartsFsDAO from './appManager/fsdao/carts.fs.dao.js';
 import ProductsFsDAO from './appManager/fsdao/products.fs.dao.js';
 import TicketsFsDAO from './appManager/fsdao/tickets.fs.dao.js';
 
-/* let MessagesDAO;
-let CartsDAO;
-let ProductsDAO;
-let TicketsDAO;
-
-let MessagesFsDAO;
-let CartsFsDAO;
-let ProductsFsDAO;
-let TicketsFsDAO; */
-
-
 switch (envConfig.PERSISTENCE) {
   case 'MONGO':
     console.log('Persistence with MongoDB');
