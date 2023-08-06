@@ -1,5 +1,7 @@
 import CartsDAO from '../DAO/classes/cart.dao.js';
 import ProductsDAO from '../DAO/classes/product.dao.js'; 
+import ProductModel from '../DAO/models/product.model.js'
+import CartModel from '../DAO/models/cart.model.js';
 
 const cartsDAO = new CartsDAO();
 const productsDAO = new ProductsDAO();
@@ -19,21 +21,28 @@ class ServiceCarts {
 
   async addProductToCartService(cartId, productId) {
     try {
-      const cart = await cartsDAO.getCart(cartId);
-      const product = await productsDAO.getProduct(productId);
+      const cart = await CartModel.findById(cartId);
+      const product = await ProductModel.findById(productId);
       if (!cart) {
-        throw new Error('Cart not found');
+        throw new Error("Cart not found");
+      }
+      if (!product) {
+        throw new Error("Product not found");
+      }
+      const existingProductIndex = cart.products.findIndex(
+        (p) => p.product.toString() === productId
+      );
+      if (existingProductIndex !== -1) {
+        cart.products[existingProductIndex].quantity += 1;
+      } else {
+        cart.products.push({ product: product._id, quantity: 1 });
+      }
+      await cart.save();
+      return cart;
+    } catch (error) {
+      throw error;
     }
-    if (!product) {
-        throw new Error('Product not found');
-    }
-    cart.products.push({product: product._id, quantity: 1});
-    await cart.save();
-    return cart;
-} catch (error) {
-    throw error;
-}
-}
+  }
 
   async updateCartService(cartId) {
     try {

@@ -29,8 +29,8 @@ class ProductsDAO {
     const product = ProductModel.findByIdAndUpdate();
     return product;
   };
-  async getProduct(){
-    const product = ProductModel.findById();
+  async getProduct(productId){
+    const product = ProductModel.findById(productId);
     return product;
   }
   
