@@ -17,7 +17,6 @@ class TicketsDAO {
         console.log(error);
         }
     }
-
     async add(ticket) {
         try {
         const newTicket = await TicketModel.create(ticket);
@@ -26,7 +25,6 @@ class TicketsDAO {
         console.log(error);
         }
     }
-
     async update(id, ticket) {}
     async delete(id) {}
 }

@@ -1,8 +1,12 @@
-import MongoCarts from '../services/carts.service.js';
-const Services = new MongoCarts();
-import mongoose from 'mongoose';
+import ServiceCarts from '../services/carts.service.js';
+const serviceCarts = new ServiceCarts();
+import mongoose, { Mongoose } from 'mongoose';
 
-import { TicketsDAO, ProductsDAO, CartsDAO } from '../DAO/factory.js';
+import ProductsDAO from '../DAO/classes/product.dao.js';
+import CartsDAO from '../DAO/classes/cart.dao.js';
+import TicketsDAO from '../DAO/models/ticket.model.js';
+
+/* import { TicketsDAO, ProductsDAO, CartsDAO } from '../DAO/factory.js'; */
 const ticketsDAO = new TicketsDAO();
 const productDAO = new ProductsDAO();
 const cartsDAO = new CartsDAO();
@@ -17,10 +21,10 @@ class ServiceTickets {
         return { status: 400, result: { status: 'error', error: ` Cart list is empty.`,},};
       }
 
-      if (!Schema.Types.ObjectId(cartId)) {
+      if (!Mongoose.Types.ObjectId(cartId)) {
         return { status: 400, result: { status: 'error', error: ` Invalid cart ID.`, }, };
       }
-      const cartFiltered = await cartsDAO.getById(cartId);
+      const cartFiltered = await cartsDAO.getCart(cartId);
       if (!cartFiltered) {
         return { status: 400, result: { status: 'error', error: ` Cart not found.`,
           },
@@ -29,7 +33,7 @@ class ServiceTickets {
       const productsNotPurchased = [];
       const products = await Promise.all(
         cartList.map(async (product) => {
-          const productFiltered = await productDAO.getById(product.id);
+          const productFiltered = await productDAO.getProduct(product.id);
           if (!productFiltered) {
             return { status: 400, result: { status: 'error', error: ` Product not found.`, },};
           }
@@ -66,14 +70,14 @@ class ServiceTickets {
       };
       const orderCreated = await ticketsDAO.add(newOrder);
       if (productsFiltered.length > 0) {
-        await Services.deleteProduct(
+        await serviceCarts.removeProductFromCart(
           cartId,
           productsFiltered.map((product) => product._id)
         );
-        await Services.deleteCart(cartId);
+        await serviceCarts.clearCartService(cartId);
       }
       if (productsNotPurchased.length > 0) {
-        await Services.updateCart(cartId, productsNotPurchased);
+        await serviceCarts.updateCartService(cartId, productsNotPurchased);
       }
       return { status: 200, result: { status: 'success', payload: orderCreated },
       };
@@ -84,7 +88,7 @@ class ServiceTickets {
   }
   async getTicketById(id) {
     try {
-      if (!Schema.Types.ObjectId(id)) {
+      if (!Mongoose.Types.ObjectId(id)) {
         return { status: 400, result: { status: 'error', error: ` Invalid ticket ID.`,},};
       }
       const ticket = await ticketsDAO.getById(id);

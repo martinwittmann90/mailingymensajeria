@@ -11,7 +11,6 @@ import TicketsFsDAO from './appManager/fsdao/tickets.fs.dao.js';
 switch (envConfig.PERSISTENCE) {
   case 'MONGO':
     console.log('Persistence with MongoDB');
-
     MessagesDAO, 
     CartsDAO,
     ProductsDAO, 
