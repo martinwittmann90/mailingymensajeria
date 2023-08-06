@@ -21,6 +21,7 @@
     </tbody>
   </table>
   <button class="button is-danger mt-3" onclick="clearCart()">Vaciar carrito</button>
+  <button type="button" class="button is-danger mt-3" onclick="purchaseCart('{{cart.result.payload._id}}')">Confirmar Compra</button>
 {{else}}
   <p>No products in the cart</p>
 {{/if}}

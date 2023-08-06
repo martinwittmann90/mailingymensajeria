@@ -78,7 +78,6 @@ function clearCart() {
 }
 
 const purchaseCart = (cartId) => {
-  //get cartId from fetch
   fetch(`/api/carts/${cartId}`, {
     method: 'GET',
     headers: {
@@ -87,7 +86,6 @@ const purchaseCart = (cartId) => {
   })
     .then((res) => res.json())
     .then((data) => {
-      // console.log(data.payload.products);
       const products = data.payload.products;
       const formatProduct = products.map((product) => {
         return {
@@ -95,7 +93,6 @@ const purchaseCart = (cartId) => {
           quantity: product.quantity,
         };
       });
-      // console.log('desde front', formatProduct);
 
       fetch(`/api/carts/${cartId}/purchase`, {
         method: 'PUT',
@@ -111,10 +108,8 @@ const purchaseCart = (cartId) => {
           setTimeout(() => {
             window.location.href = `/api/carts/purchase/${id}`;
           }, 3000);
-          showMsg2(
-            `Estamos procesando tu compra. El carrito se vaciará solo con los productos con stock disponible.`,
-            3000,
-            '##0D6EFD'
+          console.log(
+            "Productos agregados al ticket"
           );
         })
         .catch((err) => console.log(err));
