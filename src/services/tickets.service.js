@@ -17,7 +17,7 @@ class ServiceTickets {
         const savedTicket = await ticketsDAO.addTicket(ticketData);
         return savedTicket;
         } catch (error) {
-        throw (`Service failure`);
+        throw (`Service tickets failure`);
         }
     }
     async  stockCartProductsForTicket(cartId) {
@@ -27,16 +27,16 @@ class ServiceTickets {
             let cartWithOutStock = [];
             let totalPriceTicket = 0;
             cartProductsTicket.cartProducts.forEach((item) => {
-                const idProduct = item.product;
+                const product = item.product;
                 const quantityInCart = parseInt(item.quantity);
-                const availableStock = parseInt(idProduct.stock);
-                const ticketAmount = parseInt(idProduct.price);
+                const availableStock = parseInt(product.stock);
+                const ticketAmount = parseInt(product.price);
                 if (quantityInCart <= availableStock) {
                     const totalPriceProduct = ticketAmount * quantityInCart;
-                    cartWithStock.push({ idProduct, quantity: quantityInCart, totalPrice: totalPriceProduct });
+                    cartWithStock.push({ product, quantity: quantityInCart, totalPrice: totalPriceProduct });
                     totalPriceTicket += totalPriceProduct;
                 } else {
-                    cartWithOutStock.push({ idProduct, quantity: quantityInCart });
+                    cartWithOutStock.push({ product, quantity: quantityInCart });
                 }
             });
             return { cartWithStock, cartWithOutStock, totalPriceTicket };

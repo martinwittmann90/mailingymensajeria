@@ -10,7 +10,7 @@ async getCart(cartId){
     const cartProducts = cart.products;      
     return { cartProducts, cart };
 }
-async updateCart(){
+async updateCart(cartId, products){
     const cart = await CartModel.findByIdAndUpdate(cartId,
       { products },
       { new: true }

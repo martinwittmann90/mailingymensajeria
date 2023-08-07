@@ -6,7 +6,7 @@ class TicketsDAO {
         ticket.code = ticket._id.toString();
         await TicketModel.findByIdAndUpdate(ticket._id, { code: ticket.code });
         return ticket;
-        } catch (err) {
+        } catch (error) {
           throw (`Something gone wrong with the ticket`);
         }
       }
