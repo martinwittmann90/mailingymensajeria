@@ -11,7 +11,7 @@ class AuthController{
                 lastName: req.user.lastName,
                 rol: req.user.rol,
                 age: req.user.age,
-                cart: req.user.cart,
+                cartID: req.user.cartID,
                 };
             return res.status(400).json({ error: "Invalid Credentials" });
         }
@@ -27,7 +27,7 @@ class AuthController{
             lastName: req.user.lastName,
             rol: req.user.rol,
             age: req.user.age,
-            cart: req.user.cart,
+            cartID: req.user.cartID,
         };
         return res.status(201).json({ status: "success", message: "User created successfully", payload: req.user });
     };
@@ -61,7 +61,7 @@ class AuthController{
             lastName: req.user.lastName,
             role: req.user.role,
             age: req.user.age,
-            cart: req.user.cart,
+            cartID: req.user.cartID,
         });
     }
 };

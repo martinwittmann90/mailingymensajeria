@@ -6,8 +6,8 @@ const serviceTickets = new ServiceTickets();
 class TicketsController {
   async addTicket(req, res) {  
       try {
-        const user = req.session.user
-        const userCartId = user.idCart;
+        const user = req.session.user;
+        const userCartId = user.cartID;
         const purchaser = user.email;
         const ticketPreview = await serviceTickets.stockCartProductsForTicket(userCartId);
         const ticket = ticketPreview.cartWithStock;
@@ -15,7 +15,7 @@ class TicketsController {
         const oldProductsCart = ticketPreview.cartWithOutStock;
         await serviceCarts.updateCartService(userCartId, oldProductsCart );
         await serviceTickets.addTicket(purchaser, ticket, totalCart);
-        return res.render('ticketfinished', { ticket, totalCart, purchaser });      
+        return res.render('ticketsfinished', { ticket, totalCart, purchaser });      
       }catch (err) {
         res.status(500).json("Error");
       };
