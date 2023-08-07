@@ -26,13 +26,11 @@ class ServiceTickets {
             let cartWithStock = [];
             let cartWithOutStock = [];
             let totalPriceTicket = 0;
-    
             cartProductsTicket.cartProducts.forEach((item) => {
                 const idProduct = item.product;
                 const quantityInCart = parseInt(item.quantity);
                 const availableStock = parseInt(idProduct.stock);
                 const ticketAmount = parseInt(idProduct.price);
-    
                 if (quantityInCart <= availableStock) {
                     const totalPriceProduct = ticketAmount * quantityInCart;
                     cartWithStock.push({ idProduct, quantity: quantityInCart, totalPrice: totalPriceProduct });
@@ -43,7 +41,7 @@ class ServiceTickets {
             });
             return { cartWithStock, cartWithOutStock, totalPriceTicket };
         } catch (err) {
-            throw new Error("ERROR.");
+            throw new Error("Error with ticket service");
         }
     }
 }

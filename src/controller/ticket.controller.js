@@ -15,7 +15,7 @@ class TicketsController {
         const oldProductsCart = ticketPreview.cartWithOutStock;
         await serviceCarts.updateCartService(userCartId, oldProductsCart );
         await serviceTickets.addTicket(purchaser, ticket, totalCart);
-        return res.render('ticketsfinished', { ticket, totalCart, purchaser });      
+        return res.render('ticketsdone', { ticket, totalCart, purchaser });      
       }catch (err) {
         res.status(500).json("Error");
       };

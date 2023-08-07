@@ -76,31 +76,3 @@ function clearCart() {
       alert(JSON.stringify(error));
     });
 }
-async function finishPurchase(){
-/*   if (locateCartById === undefined) {
-      window.location.href = 'http://localhost:8080/auth/login';
-      return;
-  } */
-  const cartId = "64cfb2a85c3ee0592c690c36"
-  console.log(cartId)
-  fetch(`http://localhost:8080/api/carts/${cartId}/purchase`, {
-      method: 'POST',
-      headers: {
-          'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-      })
-  })
-  .then(response => {
-      if (response.ok) {
-          alert('Purchase completed');
-          location.reload()
-      } else {
-          throw new Error('Failed to create ticket');
-      }
-  })
-  .catch(error => {
-      console.error(error);
-  });
-
-}

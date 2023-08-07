@@ -79,25 +79,6 @@ class CartController{
             res.status(500).json({ status: "error", message: "Internal server error" });
         }
         };
-        async purchaseCart(req, res) {
-            const { cid } = req.params;
-            const cart = await serviceCarts.getCartService(cid);
-            const productsNotProcessed = await serviceCarts.processPurchase(cart);
-            const purchaserEmail = cart.userId;
-            const totalAmount = serviceCarts.calculateTotalAmount(cart);
-            const ticket = await serviceTickets.createTicketService(purchaserEmail, totalAmount);
-            serviceCarts.removeProcessedProducts(cart, productsNotProcessed);
-/*             if (ticket instanceof Error) {
-                CustomError.createError({
-                    name: 'Controller message error',
-                    cause: ticket,
-                    message: 'something went wrong :(',
-                    code: EErros.INTERNAL_SERVER_ERROR,
-                });
-            } */
-/*          return res.status(200).json({ productsNotProcessed, ticketId: ticket._id }); */
-            return res.status(200).render('tickets', { productsNotProcessed, ticketId: ticket._id });
-    }
-};
+}
 
 export default CartController;

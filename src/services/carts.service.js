@@ -92,51 +92,6 @@ class ServiceCarts {
       throw new Error('Error clearing cart');
   }
 }
-/*   async checkoutCart(cartId) {
-    try {
-        const cart = await cartsDAO.getCart(cartId);
-        let totalAmount = 0;
-        for (const product of cart.products) {
-            totalAmount += product.quantity * product.product.price;
-        }
-        const ticket = await ticketService.createTicket(
-            generateUniqueTicketCode(),
-            totalAmount,
-            cart.user
-            );
-
-            cart.products = [];
-            await cart.save();
-            return ticket;
-    } catch (error) {
-        throw new Error('Error checking out cart: ' + error.message);
-    }
-}
-  async processPurchase(cart) {
-    const productsNotProcessed = [];
-    for (const cartProduct of cart.products) {
-        const product = await productsDAO.getProduct(cartProduct.productId);
-        if (product.stock >= cartProduct.quantity) {
-            product.stock -= cartProduct.quantity;
-            await product.save();
-        } else {
-            productsNotProcessed.push(cartProduct.productId);
-        }
-    }
-    return productsNotProcessed;
-  }
-  calculateTotalAmount(cart) {
-    return cart.products.reduce((total, cartProduct) => {
-        const product = cartProduct.productId;
-        return total + product.price * cartProduct.quantity;
-    }, 0);
-  }
-  async removeProcessedProducts(cart, productsNotProcessed) {
-    cart.products = cart.products.filter(
-        (cartProduct) => !productsNotProcessed.includes(cartProduct.productId)
-    );
-    await cart.save();
-  } */
-} 
+};
 
 export default ServiceCarts;
