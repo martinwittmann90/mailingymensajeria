@@ -67,7 +67,7 @@ class ViewsController{
         try {
             const { cid } = req.params;
             const cart = await dbCarts.getCartService(cid);
-            const simplifiedCart = cart.products.map((item) => {
+            const simplifiedCart = cart.cartProducts.map((item) => {
                 if (item.product) {
                     return {
                     title: item.product.title,

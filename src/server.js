@@ -11,6 +11,7 @@ import productsRouter from "./routes/products.routes.js";
 import cartsRouter from "./routes/carts.routes.js";
 import chatRouter from "./routes/chat.routes.js"
 import sessionsRouter from "./routes/sessions.routes.js";
+import ticketRouter from './routes/ticket.routes.js';
 import websockets from "./config/sockets.config.js";
 import { connectMongo } from "./config/configMongoDB.js";
 import cookieParser from "cookie-parser";
@@ -20,6 +21,7 @@ import "./config/passport.config.js";
 import { __dirname } from "./config.js"; //HAY QUE CAMBIAR ESTO
 import config from "./config/config.js";
 import userDTO from './DAO/DTO/user.dto.js';
+
 
 /*-------CONFIG BASICAS Y CONEXION A BD-------*/
 const app = express();
@@ -80,6 +82,7 @@ app.use('/products', viewsRouter);
 app.use("/chat", chatRouter);
 app.use('/carts', cartsRouter);
 app.use("/auth/profile", sessionsRouter);
+app.use('/', ticketRouter);
 /*-------END POINTS-------*/
 app.use('/api/products', productsRouter);
 app.use('/api/carts', cartsRouter);

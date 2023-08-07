@@ -92,7 +92,7 @@ class ServiceCarts {
       throw new Error('Error clearing cart');
   }
 }
-  async checkoutCart(cartId) {
+/*   async checkoutCart(cartId) {
     try {
         const cart = await cartsDAO.getCart(cartId);
         let totalAmount = 0;
@@ -136,7 +136,7 @@ class ServiceCarts {
         (cartProduct) => !productsNotProcessed.includes(cartProduct.productId)
     );
     await cart.save();
-  }
-}
+  } */
+} 
 
 export default ServiceCarts;

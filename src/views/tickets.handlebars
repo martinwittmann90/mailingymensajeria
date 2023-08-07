@@ -1,34 +1,50 @@
-<h2 class="text-center my-4 pt-5">Informacion de tu Compra</h2>
-{{> nav}}
-<div
-    class="table-responsive mx-auto my-4 text-center"
-    style="max-width: 800px;"
-  >
-<p>Codigo del ticket: <b>#{{ticket.payload.code}}</b></p>
-<p>Fecha y hora de la compra: {{ticket.payload.purchase_datetime}}</p>
-
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th>Productos</th>
-      <th>Categoria</th>
-      <th>Cantidad</th>
-      <th>Precio Unitario</th>
-    </tr>
-  </thead>
-  <tbody>
-    {{#each ticket.payload.products}}
-      <tr>
-        <td>{{this.id.title}}</td>
-        <td>{{this.id.category}}</td>
-        <td>{{this.quantity}}</td>
-        <td>${{this.id.price}}</td>
-      </tr>
-    {{/each}}
-  </tbody>
-</table>
-
-<p><b>TOTAL ABONADO</b>: ${{ticket.payload.amount}}</p>
-
-</div>
-<script src="/public/js/index2.js"></script>
+<div class="container login">
+    <div class="card col-10 cardsBorder">
+      <div class="card-header card-header-dashboard-style ">
+        <h2>CheckOut - Finalizar Compra</h2>
+      </div>
+      <div class="card-body">
+        <h5 class="card-title">Ticket / Orden</h5>
+        <div class=>
+            Nombre:
+            {{user.firstName}}
+            <br />
+            Email:
+            {{user.email}}
+            <br />
+            <div class="card-header-dashboard">
+              <div class=" cardsBorder-dashboard col-4">
+                <p class="card-header card-header-dashboard-style ">Tu pedido</p>
+                {{#each cartProducts.cartProducts}}            
+                  <div class="card-body">  
+                    <p class="card-text"> {{product.title}} x {{quantity}}</p> 
+                  </div>
+                {{/each}}
+              </div>                   
+              <div class=" cardsBorder-dashboard col-3">
+                {{ticketPreview.totalPriceCart2}}
+                <p class="card-header card-header-dashboard-style ">Sin stock</p>
+                {{#each ticketPreview.cartWithOutStock}}            
+                  <div class="card-body">  
+                    <p class="card-text" style="color: #ff692d;"> {{product.title}} </p> 
+                  </div>
+                {{/each}}
+                <p class="card-text"> Los productos que no tengamos stock quedaran en tu carrito para cuando vuelvas.</p>
+              </div>               
+              <div class=" cardsBorder-dashboard col-4">
+                <p class="card-header card-header-dashboard-style ">CARRITO FINAL</p>
+                {{#each ticketPreview.cartWithStock}}            
+                  <div class="card-body">  
+                    <p class="card-text"> {{product.title}} x {{quantity}} = ${{totalPrice}}</p> 
+                  </div>
+                {{/each}}
+                <p class="card-text"><b>TOTAL</b> =>> $ {{ticketPreview.totalPriceTicket}}</p>
+              </div>               
+            </div>                  
+            <a href="http://localhost:8080/carts/{{session.cartID}}">Volver</a>
+            <a href="http://localhost:8080/ticketfinished">Finalizar</a>
+            <br/>
+        </div>
+      </div>
+    </div>
+</div>  

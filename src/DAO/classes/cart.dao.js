@@ -7,7 +7,8 @@ class CartsDAO {
 };
 async getCart(cartId){
     const cart = await CartModel.findById(cartId).populate("products.product").lean();
-    return cart;
+    const cartProducts = cart.products;      
+    return { cartProducts, cart };
 }
 async updateCart(){
     const cart = await CartModel.findByIdAndUpdate(cartId,
