@@ -11,7 +11,6 @@ cartsRouter.put("/:cid", cartController.updateCart);
 cartsRouter.delete("/:cid/products/:pid", cartController.deletOneProductbyCart);
 cartsRouter.delete("/:cid", cartController.clearCart);
 cartsRouter.post('/:cid/purchase', cartController.purchaseCart);
-cartsRouter.put('/carts/:cid/purchase', isLogged, isNotAdmin, cartController.purchaseCart);
-cartsRouter.get('/carts/purchase/:cid', isLogged, isNotAdmin, cartController.getTicketById);
+cartsRouter.post('/:cid/purchase', cartController.purchaseCart);
 
 export default cartsRouter;

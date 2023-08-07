@@ -1,9 +1,9 @@
 
-let addToCartById = document.getElementsByClassName("cartInfo")[0];
+let locateCartById = document.getElementsByClassName("cartInfo")[0];
 const API_URL = "http://localhost:8080/api";
 
 function putIntoCart(_id) {
-  const cartIdValue = addToCartById?.getAttribute("id");
+  const cartIdValue = locateCartById?.getAttribute("id");
   console.log("cartIdValue:", cartIdValue); 
   console.log("_id:", _id);
   if (cartIdValue === undefined) {
@@ -54,7 +54,7 @@ function removeProductFromCart(_id) {
 
 //FUNCION PARA VACIAR CARRITO
 function clearCart() {
-  addToCartById = localStorage.getItem("carrito-id");
+  const cartIdValue = locateCartById?.getAttribute("id");
   const url = API_URL + "/carts/" + addToCartById;
 
   const options = {

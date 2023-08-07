@@ -1,5 +1,4 @@
 export const isUser = (req, res, next) => {
-  console.log("holaaaaaaaaaaaaaaaa")
   if (process.env.NODE_ENV === 'DEVELOPMENT') {
     return next();
   }
